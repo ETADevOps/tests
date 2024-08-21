@@ -7,6 +7,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("local", policyBuilder =>
+    {
+        policyBuilder.WithOrigins("http://localhost:3000/");
+        policyBuilder.AllowAnyHeader();
+        policyBuilder.AllowAnyMethod();
+        policyBuilder.AllowCredentials();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -20,7 +31,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles(); 
 app.UseRouting(); 
 
-app.UseCors();
+app.UseCors("local");
 
 app.UseAuthorization();
 
